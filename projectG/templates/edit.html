@@ -1,0 +1,225 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+    <title>Edit Now</title>
+    <form method="POST">
+        {% csrf_token %}
+        <h1>List Name: {{ list_name }}</h1>
+        <div style="position: absolute; top: 20px; right: 20px;font-size: 30px;">
+            <a href="http://127.0.0.1:8000/projectG/">Home</a>
+        </div>
+
+        <label for="list-name-input">List Name:</label>
+        <input type="text" id="list-name-input" name="grocery_list_name" value="{{ list_name }}">
+
+        <!-- Display and edit the list items -->
+        <h2>List Items</h2>
+        <ul id="editListItems">
+            {% for item in items.all %}
+                <li>
+                    <input type="text" name="itemName" value="{{ item.name }}" required>
+                    <input type="text" name="itemQuantity" value="{{ item.quantity }}">
+                    <input type="text" name="itemInstruction" value="{{ item.instruction }}">
+                    <button class="btn btn-sm btn-outline-danger" onclick="DeleteNow('{{ item.id }}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+        <ul id="newlyAddedItems"></ul>
+
+        <!-- Add, delete, or modify items here with appropriate form inputs -->
+        <div id="groceryListContainer">
+            <h2 id="currentListName"></h2>
+
+            <label for="itemName"></label>
+            <input type="text" id="itemName" placeholder="Enter Item Name">
+            <label for="itemQuantity"></label>
+            <input type="text" id="itemQuantity" placeholder="Enter Quantity">
+            <label for="itemInstruction"></label>
+            <input type="text" id="itemInstruction" placeholder="Enter Instruction">
+            <button onclick="addItem()">Add Item</button>
+        </div>
+
+       
+        
+
+        <!-- Submit button to save changes -->
+        <button onclick="submitEditList()">Submit List</button>
+    </form>
+    
+    <script>
+    let currentList = null;
+    const lists = {};  
+
+
+    function addItem() {
+            event.preventDefault();
+            console.log("inside submit");
+            const itemNameInput = document.getElementById('itemName');
+            const itemQuantityInput = document.getElementById('itemQuantity');
+            const itemInstructionInput = document.getElementById('itemInstruction');
+
+            const itemName = itemNameInput.value.trim();
+            const itemQuantity = itemQuantityInput.value.trim();
+            const itemInstruction = itemInstructionInput.value.trim();
+
+            if (itemName !== '') {
+                // Create a new list item
+                const newItem = document.createElement('li');
+                newItem.innerHTML = `
+                    <input type="text" name="itemName" value="${itemName}" required>
+                    <input type="text" name="itemQuantity" value="${itemQuantity}">
+                    <input type="text" name="itemInstruction" value="${itemInstruction}">
+                    <button class="btn btn-sm btn-outline-danger" onclick="DeleteNow('')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                // Append the new item to the "Newly Added Items" list
+                const newlyAddedItems = document.getElementById('newlyAddedItems');
+                newlyAddedItems.appendChild(newItem);
+
+                // Clear input fields
+                itemNameInput.value = '';
+                itemQuantityInput.value = '';
+                itemInstructionInput.value = '';
+            }
+        }
+       
+    function DeleteNow(itemId) {
+     if (confirm('Are you sure you want to delete this item?')) {
+        // Send an AJAX request to delete the item
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/projectG/delete_item/' + itemId + '/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken')); // Assuming you have a function to get the CSRF token
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Item deleted successfully, you can update the UI as needed
+                    // For example, remove the item from the DOM
+                    const listItem = document.querySelector('[data-item-id="' + itemId + '"]');
+                    if (listItem) {
+                        listItem.remove();
+                    }
+                } else {
+                    console.log('Error deleting item');
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({ item_id: itemId }));
+    }
+  }
+
+
+ 
+
+    function submitEditList() {
+        event.preventDefault(); // Prevent the default form submission
+        alert('List  successfully!');
+        // Get the data from the "editListItems" and "newlyAddedItems" <ul> elements
+        const editListItems = document.getElementById('editListItems');
+        const newlyAddedItems = document.getElementById('newlyAddedItems');
+       
+
+        // Collect data from the "editListItems" <ul>
+        const editItemsData = [];
+        const editListItemsItems = editListItems.querySelectorAll('li');
+        editListItemsItems.forEach((item) => {
+            const itemNameInput = item.querySelector('input[name="itemName"]');
+            const itemQuantityInput = item.querySelector('input[name="itemQuantity"]');
+            const itemInstructionInput = item.querySelector('input[name="itemInstruction"]');
+            
+            // Create an object for each item
+            const itemData = {
+                name: itemNameInput.value,
+                quantity: itemQuantityInput.value,
+                instruction: itemInstructionInput.value,
+            };
+
+            editItemsData.push(itemData);
+        });
+
+        // Collect data from the "newlyAddedItems" <ul>
+        const newlyAddedItemsData = [];
+        const newlyAddedItemsItems = newlyAddedItems.querySelectorAll('li');
+        
+        newlyAddedItemsItems.forEach((item) => {
+            const itemNameInput = item.querySelector('input[name="itemName"]');
+            const itemQuantityInput = item.querySelector('input[name="itemQuantity"]');
+            const itemInstructionInput = item.querySelector('input[name="itemInstruction"]');
+            
+            const itemData1 = {
+                name: itemNameInput.value,
+                quantity: itemQuantityInput.value,
+                instruction: itemInstructionInput.value,
+            };
+            newlyAddedItemsData.push(itemData1);
+        });
+        // Create a combined data object
+         // Get the list_name from the input field
+        const listNameInput = document.getElementById('list-name-input');
+        const listName = listNameInput.value;
+
+        // Include the list_name in the combinedData
+        const combinedData = {
+            listName: listName, // Add the listName property
+            editListItems: editItemsData,
+            newlyAddedItems: newlyAddedItemsData,
+        };
+        
+
+        // Convert the combined data to JSON
+        const data = JSON.stringify(combinedData);
+
+        // Get the CSRF token from the cookie
+        const csrftoken = getCookie('csrftoken');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/projectG/log_Edit_lists/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // Set the CSRF token in the request header
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log('Data sent successfully');
+                } else {
+                    console.log('Error sending data');
+                }
+            }
+        };
+        
+        xhr.send(data);
+       
+        event.preventDefault();
+
+     
+    }
+
+
+// Function to get the CSRF token from the cookie
+function getCookie(name) {
+let cookieValue = null;
+if (document.cookie && document.cookie !== '') {
+const cookies = document.cookie.split(';');
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+    }
+}
+}
+return cookieValue;
+}
+       
+
+</script>
+{% endblock %}

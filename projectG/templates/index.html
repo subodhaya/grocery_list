@@ -1,0 +1,512 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+    <h2>Hi {{ request.user }} !!</h2>
+    <div style="position: absolute; top: 20px; right: 20px;font-size: 30px;">
+        <a href="http://127.0.0.1:8000/projectG/">Home</a>
+    </div>
+
+    <button class="btn btn-sm btn-outline-primary" id="allList">Lists</button>
+    <button class="btn btn-sm btn-outline-primary" id="created_list">Create List</button>
+    <button class="btn btn-sm btn-outline-primary" id="get_finished_lists">Finished List</button>
+    <button class="btn btn-sm btn-outline-primary" id="saved_list">Saved List</button>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+    <hr>
+
+    <div id="lists-view">
+    </div>
+    <div id="lists-detail-view">
+    </div>
+    <div id="created-view" style="display: none;">
+      <label for="listName">Enter List Name: </label>
+      <input type="text" id="listName" placeholder="List Name">
+      <button onclick="createList()">Create List</button>
+    
+      <div id="groceryListContainer" style="display: none;">
+        <h2 id="currentListName"></h2>
+        <ul id="groceryItems"></ul>
+        
+        <label for="itemName"> </label>
+        <input type="text" id="itemName" placeholder="Enter Item:">
+        <label for="itemQuantity"> </label>
+        <input type="text" id="itemQuantity" placeholder="Enter Quantity:">
+        <label for="itemInstruction"> </label>
+        <input type="text" id="itemInstruction" placeholder="Enter Instruction:">
+        <button onclick="addItem()">Add Item</button>
+        
+        
+          
+        <button onclick="submitList()">Submit List</button>
+    
+      </div>
+     </div>
+ 
+    <title>Grocery List</title>
+    <div id="lists-container" style="display: block;">
+     
+      {% for grocery_list, items in data_by_lists.items %}
+       <div class="list" style="display:inline">
+        <div class="item-lister" onclick="toggleListItems(this);" title="Click to see list-items">
+          <br>  <td>{{ grocery_list.name }}</td>&nbsp  &nbsp  &nbsp   &nbsp   &nbsp   &nbsp
+          
+            
+            
+            <button class="btn btn-sm btn-outline-primary" onclick="editList('{{ grocery_list.id }}',this)">Edit List</button>&nbsp
+            
+            <button class="btn btn-sm btn-outline-success" onclick="shopNow('{{ grocery_list.id }}')" > Shop Now</button>&nbsp
+            <button class="btn btn-sm btn-outline-success" onclick="shareWith('{{ grocery_list.id }}')" > Share With</button>&nbsp
+            
+            <button class="btn btn-sm btn-outline-info" onclick="toggleListStatus('{{ grocery_list.id }}', this)">
+                {% if grocery_list.saved_list %}
+                   Unsave
+                {% else %}
+                 Save
+               {% endif %}
+            </button>&nbsp
+            <button class="btn btn-sm btn-outline-danger" onclick="DeleteNow('{{ grocery_list.id }}')">
+              <i class="fas fa-trash"></i> 
+          </button>
+          
+          
+          
+         
+        
+          <div class="list-items">
+            <ul class="listed-items">
+              {% if items %}
+              {% for item in items %}
+                  <li>
+                     Item name: {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
+                  </li>
+              {% endfor %}
+          {% else %}
+              <li>No items in this list.</li>
+          {% endif %}
+            </ul>
+        </div>
+        
+      {% endfor %} 
+    
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+
+document.getElementById("created_list").addEventListener("click", function() {
+  var createdView = document.getElementById("created-view");
+  createdView.style.display = "block"; 
+  var listsContainer = document.getElementById("lists-container");
+      listsContainer.style.display = "none";
+  }); 
+
+// Use buttons to toggle between views
+document.getElementById("allList").addEventListener("click", function() {
+    window.location.href = "/projectG/";
+    var listsContainer = document.getElementById("lists-container");
+    var lists = listsContainer.querySelectorAll(".list");
+
+    lists.forEach(function(list) {
+        if (list.style.display === "none") {
+            list.style.display = "block";
+        } else {
+            list.style.display = "none";
+        }
+    }); 
+});
+document.getElementById("get_finished_lists").addEventListener("click", function() {
+   
+      
+    fetch(`/projectG/get_finished_lists/`)  // Replace with the actual URL of your view
+      
+      .then(response => {
+        if (response.ok) {
+          // If the response status is OK, redirect to the response URL
+          window.location.href = response.url;
+        } else {
+          console.error("Error fetching finished lists. Status:", response.status);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching finished lists:", error);
+      });
+  });
+    
+  //document.querySelector('#finished_task').addEventListener('click', () => load_lists('finished_task'));
+}); 
+
+document.getElementById("saved_list").addEventListener("click", function() {
+   
+      
+   fetch(`/projectG/get_saved_lists/`)  // Replace with the actual URL of your view
+     
+     .then(response => {
+       if (response.ok) {
+         // If the response status is OK, redirect to the response URL
+         window.location.href = response.url;
+       } else {
+         console.error("Error fetching finished lists. Status:", response.status);
+       }
+     })
+     .catch(error => {
+       console.error("Error fetching finished lists:", error);
+     });
+ });
+   
+ //document.querySelector('#finished_task').addEventListener('click', () => load_lists('finished_task'));
+
+
+
+
+let currentList = null;
+    const lists = {};
+
+    function shareWith(listId) {
+    const SharedwithUsername = prompt("Enter the username to share this list with");
+    
+    
+    if (SharedwithUsername) {
+        
+        const sharedata = { target_username: SharedwithUsername };
+        
+
+        fetch(`/projectG/share_list/${listId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+            },
+            body: JSON.stringify(sharedata),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error sharing list:', error);
+        });
+    }
+}
+
+
+    function shopNow(listId) {
+    // Fetch the list data for the specified listId using AJAX
+    fetch(`/projectG/get_items/${listId}/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Extract the list name and items from the response
+            const listName = data.list_name; // Adjust this based on the actual structure of your JSON response
+            const items = data.items; // Adjust this based on the actual structure of your JSON response
+            const url = `{% url 'shopnow_view' list_id=0 %}`.replace('0', listId);
+
+   
+            // Encode the data as a query string
+            const queryString = `?list_name=${encodeURIComponent(listName)}&list_id=${encodeURIComponent(listId)}&items=${encodeURIComponent(JSON.stringify(items))}`;
+
+            const finalUrl = `${url}${queryString}`;
+            // Redirect to the shopnow.html page with the query string
+            window.location.href = finalUrl;
+        })
+        
+}
+function DeleteNow(listId) {
+    if (confirm("Are you sure you want to delete this list?")) {
+        // Send an AJAX request to the server to delete the list
+        
+        fetch(`delete_list/${listId}/`)
+    .then(response => {
+        if (response.ok) {
+            // Find the list element with a specific text content
+            location.reload();
+        } else {
+            console.error(`Failed to delete the "${listId}" list.`);
+        }
+    });
+ }
+} 
+
+
+function toggleListItems(listElement) {
+    var listItems = listElement.querySelector('.list-items');
+    
+    
+    if (listItems.style.display === "none") {
+        
+        listItems.style.display = "block";
+    } else {
+        listItems.style.display = "none";
+    }
+}
+   
+function editList(listId) {
+    // Fetch the data you want to send to the server (e.g., list name, item details)
+    const listName = document.getElementById('listName').value; // Get the updated list name from an input field
+    const itemNames = document.querySelectorAll('[name="itemName"]');
+    const itemQuantities = document.querySelectorAll('[name="itemQuantity"]');
+    const itemInstructions = document.querySelectorAll('[name="itemInstruction"]');
+    
+    const items = [];
+    
+    // Create an array of items with their details
+    for (let i = 0; i < itemNames.length; i++) {
+        const itemName = itemNames[i].value;
+        const itemQuantity = itemQuantities[i].value;
+        const itemInstruction = itemInstructions[i].value;
+        
+        items.push({ name: itemName, quantity: itemQuantity, instruction: itemInstruction });
+    }
+
+    // Prepare the data to send as JSON
+    const data = {
+        listName: listName,
+        items: items,
+    };
+    
+
+    // Send a POST request to the edit_list view
+    fetch(`/projectG/edit_list/${listId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle a successful response (e.g., redirect to a success page)
+            const url = `{% url 'edit_list' list_id=0 %}`.replace('0', listId);
+
+   
+            // Encode the data as a query string
+            const queryString = `?list_name=${encodeURIComponent(listName)}&items=${encodeURIComponent(JSON.stringify(items))}`;
+            const finalUrl = `${url}${queryString}`;
+            // Redirect to the shopnow.html page with the query string
+            window.location.href = finalUrl;
+        } else {
+            
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function toggleListStatus(listId, button) {
+    // Simulate toggling the "saved_list" status
+    const saved_list = !button.dataset.saved_list || button.dataset.saved_list === 'false';
+    button.dataset.saved_list = saved_list;
+    
+    // Update the button text based on the new status
+    button.textContent = saved_list ? 'saved_list' : 'Not saved_list';
+
+    // You can send an AJAX request to update the server-side status here
+    // Example AJAX request to update the status on the server:
+    
+    fetch(`/projectG/update_list_status/${listId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+        },
+        body: JSON.stringify({ saved_list }), // Send the new status
+    })
+    .then(response => {
+        if (response.ok) {
+            // Status updated successfully
+        } else {
+            // Error updating status
+        }
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
+    
+}
+
+function toggleTaskStatus(listId, button) {
+    // Simulate toggling the "finished" status
+    const finished = !button.dataset.finished || button.dataset.finished === 'false';
+    button.dataset.finished = finished;
+    
+    // Update the button text based on the new status
+    button.textContent = finished ? 'Finished' : 'Not Finished';
+
+    // You can send an AJAX request to update the server-side status here
+    // Example AJAX request to update the status on the server:
+    
+    fetch(`/projectG/update_task_status/${listId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+        },
+        body: JSON.stringify({ finished }), // Send the new status
+    })
+    .then(response => {
+        if (response.ok) {
+            // Status updated successfully
+        } else {
+            // Error updating status
+        }
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
+    
+}
+
+// Function to get the CSRF token from the cookie (if needed)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+function createList() {
+
+    const listNameInput = document.getElementById('listName');
+    const listName = listNameInput.value.trim();
+
+    if (listName !== '') {
+      currentList = listName;
+      document.getElementById('currentListName').textContent = `List: ${currentList}`;
+      document.getElementById('groceryListContainer').style.display = 'block';
+      listNameInput.value = '';
+    }
+  }
+
+ 
+
+ // Define an empty `lists` object at the beginning
+
+
+function addItem() {
+    if (currentList) {
+        const itemInput = document.getElementById('itemName');
+        const itemQuantityInput = document.getElementById('itemQuantity');
+        const itemInstructionInput = document.getElementById('itemInstruction');
+
+        const itemName = itemInput.value.trim();
+        const itemQuantity = itemQuantityInput.value.trim();
+        const itemInstruction = itemInstructionInput.value.trim();
+
+        if (itemName !== '') {
+            const groceryItems = document.getElementById('groceryItems');
+            const newItem = document.createElement('li');
+            newItem.innerHTML = `
+                <input type="text" name="itemName" value="${itemName}" required>
+                <input type="text" name="itemQuantity" value="${itemQuantity}">
+                <input type="text" name="itemInstruction" value="${itemInstruction}">
+                <button class="btn btn-sm btn-outline-danger" onclick="DeleteNow('{{ item.id }}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+            groceryItems.appendChild(newItem);
+
+            // Update the `lists` object with the new item data
+            if (!lists[currentList]) {
+                lists[currentList] = [];
+            }
+            lists[currentList].push({ name: itemName, quantity: itemQuantity, instruction: itemInstruction });
+
+            itemInput.value = '';
+            itemQuantityInput.value = '';
+            itemInstructionInput.value = '';
+        }
+    }
+}
+
+function submitList() {
+    if (currentList && document.getElementById('groceryItems').children.length > 0) {
+        // No need to collect data from the DOM because it's already in the `lists` object
+        // You can use the `lists` object directly to submit the data to the server.
+        const data = JSON.stringify(lists);
+        console.log(data);
+
+        // Rest of your code for sending data to the server via AJAX
+   
+
+
+// Get the CSRF token from the cookie
+const csrftoken = getCookie('csrftoken');
+
+const xhr = new XMLHttpRequest();
+xhr.open('POST', '/projectG/log_lists/', true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+
+// Set the CSRF token in the request header
+xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+            console.log('Data sent successfully');
+        } else {
+            console.log('Error sending data');
+        }
+    }
+};
+xhr.send(data);
+
+alert('List submitted successfully!');
+} else {
+alert('Please add items to the list before submitting.');
+}
+}
+
+// Function to get the CSRF token from the cookie
+function getCookie(name) {
+let cookieValue = null;
+if (document.cookie && document.cookie !== '') {
+const cookies = document.cookie.split(';');
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+    }
+}
+}
+return cookieValue;
+}
+
+
+
+
+
+</script>
+
+
+<style>
+  .list-items {
+    display: none;
+  }
+  </style>
+  
+{% endblock %}
+
+

@@ -1,0 +1,157 @@
+textarea {
+    min-height: 400px;
+}
+body{
+    font-family: Roboto,Arial,sans-serif;
+}
+.autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+  }
+  input {
+    border: 1px solid transparent;
+    background-color: #5f1717;
+    padding: 10px;
+    font-size: 16px;
+  }
+  input[type=text] {
+    background-color: #e7219515;
+    width: 29%;
+  }
+  input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+  }
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #9cd0ee;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #922a2a;
+    border-bottom: 1px solid #861818;
+  }
+  .autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #742020;
+  }
+  .autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+
+.done {
+  text-decoration: line-through;
+  color: #999; /* You can adjust the color to your preference */
+}
+.hidden {
+  display: none;
+}
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+.list-items {
+    display: none;
+}
+ul {
+list-style-type: none;
+padding: 0;
+}
+.done {
+text-decoration: line-through;
+color: #999;
+}
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ 
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  
+}
+
+/* Style for the list name */
+.list h3 {
+  margin: 0;
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+/* Style for the buttons */
+.list button {
+  padding: 5px 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+}
+
+/* Style for primary button */
+.list button.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Style for success button */
+.list button.btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Style for info button */
+.list button.btn-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+/* Style for danger button */
+.list button.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Style for button icons */
+.list button i {
+  margin-right: 5px;
+}
+
+/* Add hover effect to buttons */
+.list button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+ul {
+list-style-type: none;
+padding: 0;
+}
+
+
+
+.timestamp-email{
+    color: #202124;
+    font-size: .75rem;
+    letter-spacing: .3px;
+}

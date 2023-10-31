@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <title>Shop Now</title>
+</head>
+<body>
+    <h1>Shopping List: {{ list_name }}</h1>
+    <div style="position: absolute; top: 20px; right: 20px;font-size: 30px;">
+        <a href="http://127.0.0.1:8000/projectG/">Home</a>
+    </div>
+
+    <ul class="listed-items">
+        {% if items %}
+            {% for item in items %}
+             <li class="{% if item.added %}done{% endif %}" data-item-id="{{ item.id }}" onclick="toggleDone(this);" title="Click to mark as done">
+                {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
+             </li>
+             
+            {% endfor %}
+        {% else %}
+            <li>No items in this list.</li>
+        {% endif %}
+    </ul>
+
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <button class="btn btn-sm btn-outline-info" onclick="toggleTaskStatus('{{ list_id }}', this)">
+        {% if finished == True %}
+            Finished
+        {% else %}
+            Yet to Finished
+        {% endif %}
+    </button>
+        
+
+
+<script>
+    function toggleDone(item) {
+     item.classList.toggle('done');
+      // Extract the item ID or other relevant identifier from the item's data attributes, for example:
+     const itemId = item.dataset.itemId; // Make sure you set this attribute in your HTML
+    
+    // Send an AJAX request to update the added field on the server
+     fetch(`update_item/${itemId}/`, {
+        method: 'POST', // You can use 'PUT' or 'PATCH' depending on your Django view
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // You need to handle CSRF tokens
+        },
+        body: JSON.stringify({ added: true }), // Send the updated value
+     })
+      .then(response => {
+        if (!response.ok) {
+            console.error('Failed to update the item.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+// Function to get the CSRF token from cookies
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+
+}
+
+
+document.getElementById("get_finished_lists").addEventListener("click", function() {
+
+      
+   fetch(`/projectG/get_finished_lists/`)  // Replace with the actual URL of your view
+     
+     .then(response => {
+       if (response.ok) {
+         // If the response status is OK, redirect to the response URL
+         window.location.href = response.url;
+       } else {
+         console.error("Error fetching finished lists. Status:", response.status);
+       }
+     })
+     .catch(error => {
+       console.error("Error fetching finished lists:", error);
+     });
+ });
+   
+
+
+
+
+function toggleTaskStatus(list_id, button) {
+   // Simulate toggling the "finished" status
+   const finished = !button.dataset.finished || button.dataset.finished === 'false';
+   button.dataset.finished = finished;
+   
+   // Update the button text based on the new status
+   button.textContent = finished ? 'Finished' : 'Not Finished';
+   const urlParams = new URLSearchParams(window.location.search);
+   const listId = urlParams.get('list_id');
+
+// Now you can use listId in your JavaScript code
+    console.log('List ID:', listId); 
+
+   // You can send an AJAX request to update the server-side status here
+   // Example AJAX request to update the status on the server:
+   
+   fetch(`/projectG/update_task_status/${listId}/`, {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json',
+           'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token
+       },
+       body: JSON.stringify({ finished }), // Send the new status
+   })
+   .then(response => {
+       if (response.ok) {
+           // Status updated successfully
+       } else {
+           // Error updating status
+       }
+   })
+   .catch(error => {
+       console.log('Error:', error);
+   });
+   
+}
+
+// Parse the items data from the query parameter
+
+</script>
+{% endblock %}
