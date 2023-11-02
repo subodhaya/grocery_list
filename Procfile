@@ -1,1 +1,2 @@
-web: gunicorn projectG.wsgi
+web: gunicorn grocery_list.wsgi
+
