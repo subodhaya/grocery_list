@@ -4,6 +4,9 @@ textarea {
 body{
     font-family: Roboto,Arial,sans-serif;
 }
+@media (max-width: 768px) {
+  /* CSS for screens up to 768px wide */
+}
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;
