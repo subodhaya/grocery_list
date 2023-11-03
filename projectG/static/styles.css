@@ -1,12 +1,76 @@
 textarea {
     min-height: 400px;
 }
-body{
-    font-family: Roboto,Arial,sans-serif;
+body {
+  font-family: Arial, sans-serif;
 }
+
+.container {
+  max-width: 100%;
+  padding: 10px;
+}
+
+/* Header Styles */
+h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+.header-link {
+  text-align: right;
+  font-size: 16px;
+  color: rgb(255, 0, 76);
+}
+
+/* Button Styles */
+.buttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.buttons button {
+  display: block;
+  margin: 10px auto;
+  width: 100%;
+}
+
+/* List Styles */
+.list {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.list button {
+  margin: 5px;
+}
+
+/* Form and Grocery List Styles */
+#groceryListContainer {
+  padding: 10px;
+}
+
+#groceryItems {
+  list-style: none;
+  padding: 0;
+}
+
+#groceryItems li {
+  margin: 5px 0;
+}
+
+/* Additional Styles (you can customize these) */
+/* @media queries for responsive design */
 @media (max-width: 768px) {
-  /* CSS for screens up to 768px wide */
+  .buttons button {
+      font-size: 16px;
+  }
+
+  .list {
+      font-size: 16px;
+  }
 }
+
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;

@@ -3,18 +3,17 @@
 
 {% block body %}
 
-<div class="container">
+
     <h2>Hi {{ request.user }} !!</h2>
-    <div class="header-link">
+    <div style="position: absolute; top: 20px; right: 20px;font-size: 30px;">
         <a href="https://subogrocerylist-2cb1d307b153.herokuapp.com/projectG/">Home</a>
     </div>
-    <div class="buttons">
+
     <button class="btn btn-sm btn-outline-primary" id="allList">Lists</button>
     <button class="btn btn-sm btn-outline-primary" id="created_list">Create List</button>
     <button class="btn btn-sm btn-outline-primary" id="get_finished_lists">Finished List</button>
     <button class="btn btn-sm btn-outline-primary" id="saved_list">Saved List</button>
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
-    </div>
     <hr>
 
     <div id="lists-view">
@@ -91,7 +90,7 @@
         
       {% endfor %} 
     
-        </div>
+
 
 
 

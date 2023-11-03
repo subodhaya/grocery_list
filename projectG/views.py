@@ -451,7 +451,7 @@ def login_view(request):
 
         else:
             return render(request, "login.html", {
-                "message": "Invalid email and/or password."
+                "message": "Invalid user name and/or password."
             })
     else:
         return render(request, "login.html")
