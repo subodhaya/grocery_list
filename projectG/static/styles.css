@@ -25,12 +25,19 @@ right: 10px;
 
 color: rgb(255, 0, 76);
 }
+.bg-blue {
+  background-color: rgb(96, 117, 211);
+  /* You can adjust the shade of blue by specifying a different color value. */
+}
 .home-link {
  /* Use flexbox to align items horizontally */
   align-items: center; /* Center items vertically */
   text-decoration: none; /* Remove underlines from the link */
   color: #066631; /* Text color for the link */
   font-size: 22px; /* Font size for the link */
+  position: absolute;
+  top: 60px;
+  right: 60px;
 }
 
 

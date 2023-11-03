@@ -30,7 +30,7 @@ from django.db.models import Q
 def index(request):
     if request.user.is_authenticated:
          all_lists =GroceryList.objects.filter(Q(user=request.user) | Q(shared_with=request.user))
-         print("ffffffff out display")
+         print(all_lists)
     # Create a dictionary to organize the data by lists
          data_by_lists = {}
          for grocery_list in all_lists:
