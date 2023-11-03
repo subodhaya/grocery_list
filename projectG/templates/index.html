@@ -5,12 +5,11 @@
 
 <div class="container">
     <h2>Hi {{ request.user }} !!</h2>
-    <div class="header-link">
-        <a href="https://subogrocerylist-2cb1d307b153.herokuapp.com/projectG/">Home</a>
-    </div>
+ 
     <div class="buttons">
-    <button class="btn btn-sm btn-outline-primary" id="allList">Lists</button>
+    
     <button class="btn btn-sm btn-outline-primary" id="created_list">Create List</button>
+    <button class="btn btn-sm btn-outline-primary" id="allList">My Lists</button>
     <button class="btn btn-sm btn-outline-primary" id="get_finished_lists">Finished List</button>
     <button class="btn btn-sm btn-outline-primary" id="saved_list">Saved List</button>
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
@@ -46,10 +45,14 @@
      </div>
  
     <title>Grocery List</title>
+    
     <div id="lists-container" style="display: block;">
+       
      
       {% for grocery_list, items in data_by_lists.items %}
+    
        <div class="list" style="display:inline">
+       
         <div class="item-lister" onclick="toggleListItems(this);" title="Click to see list-items">
           <br>  <td>{{ grocery_list.name }}</td>&nbsp  &nbsp  &nbsp   &nbsp   &nbsp   &nbsp
           

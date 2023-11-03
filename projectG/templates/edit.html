@@ -6,9 +6,7 @@
     <form method="POST">
         {% csrf_token %}
         <h1>List Name: {{ list_name }}</h1>
-        <div style="position: absolute; top: 20px; right: 20px;font-size: 30px;">
-            <a href="http://127.0.0.1:8000/projectG/">Home</a>
-        </div>
+
 
         <label for="list-name-input">List Name:</label>
         <input type="text" id="list-name-input" name="grocery_list_name" value="{{ list_name }}">
