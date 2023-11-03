@@ -76,14 +76,14 @@
        <div class="list" style="display:inline">
        
         <div class="item-lister" onclick="toggleListItems(this);" title="Click to see list-items">
-          <br>  <td>{{ grocery_list.name }}</td>&nbsp  &nbsp  &nbsp   &nbsp   &nbsp   &nbsp
+          <br>  <td>{{ grocery_list.name }}</td>&nbsp  
           
             
             
-            <button class="btn btn-sm btn-outline-primary" onclick="editList('{{ grocery_list.id }}',this)">Edit List</button>&nbsp
+            <button class="btn btn-sm btn-outline-primary" onclick="editList('{{ grocery_list.id }}',this)">Edit List</button
             
-            <button class="btn btn-sm btn-outline-success" onclick="shopNow('{{ grocery_list.id }}')" > Shop Now</button>&nbsp
-            <button class="btn btn-sm btn-outline-success" onclick="shareWith('{{ grocery_list.id }}')" > Share With</button>&nbsp
+            <button class="btn btn-sm btn-outline-success" onclick="shopNow('{{ grocery_list.id }}')" > Shop Now</button>
+            <button class="btn btn-sm btn-outline-success" onclick="shareWith('{{ grocery_list.id }}')" > Share With</button>
             
             <button class="btn btn-sm btn-outline-info" onclick="toggleListStatus('{{ grocery_list.id }}', this)">
                 {% if grocery_list.saved_list %}
@@ -91,7 +91,7 @@
                 {% else %}
                  Save
                {% endif %}
-            </button>&nbsp
+            </button>
             <button class="btn btn-sm btn-outline-danger" onclick="DeleteNow('{{ grocery_list.id }}')">
               <i class="fas fa-trash"></i> 
           </button>
