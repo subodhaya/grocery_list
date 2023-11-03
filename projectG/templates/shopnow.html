@@ -1,59 +1,66 @@
+
 {% extends "layout.html" %}
 {% load static %}
 
-{% block body %}
+    
 
-    <title>Shop Now</title>
-</head>
+{% block body %}
 <div class="container bg-blue">
-    <h1 class="mb-0"><i class="fas fa-tasks me-2"></i>Grocery List</h1></div>
-    <div class="container bg-light">
-        <div class="row" >
-            <div class="col">
-                <h2>Hi {{ request.user }} !!!</h2>
-            </div>
-            
-                <a href="https://subogrocerylist-2cb1d307b153.herokuapp.com/projectG/" class="home-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-        
-                <a  href="{% url 'logout' %}">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            
+    <h1 class="mb-0"><i class="fas fa-tasks me-2"></i>Grocery List</h1>
+</div>
+<div class="container bg-light">
+    <div class="row" >
+        <div class="col">
+            <h2>Hi {{ request.user }} !!!</h2>
         </div>
+        
+            <a class="btn btn-sm btn-outline-primary" href="https://subogrocerylist-2cb1d307b153.herokuapp.com/projectG/" class="home-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+    
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        
     </div>
 </div>
+</div>
+
+    <title>Shop Now</title>
+
 <body>
-    <h1>Shopping List: {{ list_name }}</h1>
-    
-  
+   
 
-    <ul class="listed-items">
-        {% if items %}
-            {% for item in items %}
-             <li class="{% if item.added %}done{% endif %}" data-item-id="{{ item.id }}" onclick="toggleDone(this);" title="Click to mark as done">
-                {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
-             </li>
-             
-            {% endfor %}
-        {% else %}
-            <li>No items in this list.</li>
+    <div class="container-fluid">
+        <h1>Shopping List: {{ list_name }}</h1>
+
+        <ul class="listed-items">
+            {% if items %}
+                {% for item in items %}
+                 <div class="list-group-item d-flex d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2 bg-yellow">
+                 <li class="{% if item.added %}done{% endif %}" data-item-id="{{ item.id }}" onclick="toggleDone(this);" title="Click to mark as done">
+                    {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
+                 </li>
+                 </div>
+                {% endfor %}
+            {% else %}
+                <li>No items in this list.</li>
+            {% endif %}
+        </ul>
+
+        {% if error_message %}
+            <p>{{ error_message }}</p>
         {% endif %}
-    </ul>
+        <button class="btn btn-sm btn-outline-info" onclick="toggleTaskStatus('{{ list_id }}', this)">
+            {% if finished == True %}
+                Finished
+            {% else %}
+                Yet to Finished
+            {% endif %}
+        </button>
+    </div>
 
 
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
-    <button class="btn btn-sm btn-outline-info" onclick="toggleTaskStatus('{{ list_id }}', this)">
-        {% if finished == True %}
-            Finished
-        {% else %}
-            Yet to Finished
-        {% endif %}
-    </button>
-        
 
 
 <script>

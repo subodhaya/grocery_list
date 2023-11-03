@@ -25,6 +25,12 @@ right: 10px;
 
 color: rgb(255, 0, 76);
 }
+
+.bg-yellow {
+  background-color: rgb(231, 219, 163);
+  /* You can adjust the shade of blue by specifying a different color value. */
+}
+
 .bg-blue {
   background-color: rgb(96, 117, 211);
   /* You can adjust the shade of blue by specifying a different color value. */
@@ -160,22 +166,11 @@ list-style: none; /* Remove list bullets */
 padding: 0;
 margin: 10px 0;
 }
-
-.list-items li {
-margin: 5px 0;
-padding: 5px;
-background-color: #f2f2f2; /* Background color */
-border: 1px solid #ddd; /* Border */
-border-radius: 5px; /* Rounded corners */
-}
-
-.list-items li:hover {
-background-color: #e0e0e0; /* Background color on hover */
-}
-
-.list-items a {
-text-decoration: none; /* Remove underline for links */
-color: #333; /* Text color */
+#submit-list {
+  display: block;
+  margin: 0 auto; /* Center the button horizontally */
+  margin-top: 20px; /* Add some top margin for spacing */
+  /* Add any additional styles you want for the button */
 }
 
 .list-items a:hover {
