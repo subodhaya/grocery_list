@@ -19,6 +19,7 @@ h2 {
 .header-link {
   text-align: right;
   font-size: 16px;
+  
   color: rgb(255, 0, 76);
 }
 
@@ -129,8 +130,33 @@ h2 {
   justify-content: space-around;
   gap: 10px; /* Adjust the gap between buttons as needed */
 }
+
 .list-items {
-    display: none;
+  display: none;
+  list-style: none; /* Remove list bullets */
+  padding: 0;
+  margin: 10px 0;
+}
+
+.list-items li {
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #f2f2f2; /* Background color */
+  border: 1px solid #ddd; /* Border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.list-items li:hover {
+  background-color: #e0e0e0; /* Background color on hover */
+}
+
+.list-items a {
+  text-decoration: none; /* Remove underline for links */
+  color: #333; /* Text color */
+}
+
+.list-items a:hover {
+  color: #007bff; /* Text color on hover for links */
 }
 ul {
 list-style-type: none;
