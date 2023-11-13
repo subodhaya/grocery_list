@@ -59,7 +59,7 @@
         <label for="itemInstruction"> </label>
         <input type="text" id="itemInstruction" placeholder="Instruction:">
         <button onclick="addItem()">Add Item</button>
-        <button class="btn btn-lg btn-primary" id="submit-list" onclick="submitList()">Submit List</button
+        <button class="btn btn-lg btn-primary" id="submit-list" onclick="submitList()">Submit List</button>
 
     
       </div>
@@ -78,9 +78,9 @@
       {% for grocery_list, items in data_by_lists.items %}
     
        <div class="list" style="display:inline">
-       
+         
         <div class="item-lister" onclick="toggleListItems(this);" title="Click to see list-items">
-          <br>  <td>{{ grocery_list.name }}</td>&nbsp  
+          <br>  <td>{{ forloop.counter }}:{{ grocery_list.name }}</td>&nbsp  
           
             
             
@@ -109,7 +109,7 @@
               {% if items %}
               {% for item in items %}
                   <li>
-                     Item name: {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
+                    {{ forloop.counter }}: Item name: {{ item.name }} - Quantity: {{ item.quantity }} - Instruction: {{ item.instruction }}
                   </li>
               {% endfor %}
           {% else %}
@@ -442,7 +442,7 @@ function createList() {
  
 
  // Define an empty `lists` object at the beginning
-
+let itemNum =0;
 
 function addItem() {
     if (currentList) {
@@ -453,11 +453,15 @@ function addItem() {
         const itemName = itemInput.value.trim();
         const itemQuantity = itemQuantityInput.value.trim();
         const itemInstruction = itemInstructionInput.value.trim();
+        
+        itemNum++;
+
 
         if (itemName !== '') {
             const groceryItems = document.getElementById('groceryItems');
             const newItem = document.createElement('li');
             newItem.innerHTML = `
+                <span class="item-number">${itemNum}</span>
                 <input type="text" name="itemName" value="${itemName}" required>
                 <input type="text" name="itemQuantity" value="${itemQuantity}">
                 <input type="text" name="itemInstruction" value="${itemInstruction}">
@@ -482,6 +486,7 @@ function addItem() {
 }
 
 function submitList() {
+    
     if (currentList && document.getElementById('groceryItems').children.length > 0) {
         // No need to collect data from the DOM because it's already in the `lists` object
         // You can use the `lists` object directly to submit the data to the server.
@@ -514,8 +519,21 @@ xhr.onreadystatechange = function () {
 xhr.send(data);
 
 alert('List submitted successfully!');
-} else {
-alert('Please add items to the list before submitting.');
+} else 
+  {
+    
+    const itemInput = document.getElementById('itemName');
+    const itemName = itemInput.value.trim();
+
+    if (itemName !== '') {
+        // There is at least one item, so call addItem()
+        addItem();
+        submitList();
+
+    } else {
+        alert('Please add items to the list before submitting.');
+    }
+
 }
 }
 

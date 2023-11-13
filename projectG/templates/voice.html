@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Recognition</title>
+</head>
+<body>
+    <h1>Voice Recognition Example</h1>
+    <p>Click the microphone button and speak. The recognized text will be displayed below.</p>
+
+    <button id="startButton">Start Voice Recognition</button>
+    <p id="output"></p>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const output = document.getElementById('output');
+
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.onresult = function(event) {
+                const result = event.results[0][0].transcript;
+                output.textContent = 'You said: ' + result;
+            };
+
+            recognition.onerror = function(event) {
+                output.textContent = 'Error: ' + event.error;
+            };
+
+            startButton.addEventListener('click', function() {
+                recognition.start();
+            });
+        } else {
+            output.textContent = 'Speech recognition is not supported in your browser.';
+        }
+    </script>
+</body>
+</html>

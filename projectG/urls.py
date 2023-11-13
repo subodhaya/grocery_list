@@ -28,7 +28,9 @@ urlpatterns = [
     path('get_finished_lists/delete_list/<int:list_id>/', views.delete_list, name='delete_list'),
     path('log_Edit_lists/', views.log_Edit_lists, name='log_Edit_lists'),
     path('delete_item/<int:item_id>/', views.delete_item, name='delete_item'),
-    path('share_list/<int:list_id>/', views.share_list, name='share_list')
+    path('share_list/<int:list_id>/', views.share_list, name='share_list'),
+    path('sw.js', views.sw, name='sw.js'),
+    path('manifest.json', views.manifest, name='manifest.json'),
      
 ]
     

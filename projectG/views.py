@@ -185,6 +185,17 @@ def add_item(request, name):
             item = GroceryItem.objects.create(list=grocery_list, name=name)
     return HttpResponseRedirect('grocery_list', list_id=name)
 
+
+def sw(request):
+    # Your service worker logic goes here
+    content = 'Service worker content'
+    return HttpResponse(content, content_type='text/javascript')
+
+def manifest(request):
+    # Your manifest logic goes here
+    content = 'Manifest content'
+    return HttpResponse(content, content_type='application/json')
+
 @login_required
 @csrf_exempt
 def share_list(request, list_id):
