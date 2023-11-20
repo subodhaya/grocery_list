@@ -1,0 +1,19 @@
+{
+    "name": "shoppingLists",
+    "short_name": "shoppingLists",
+    "description": "shoppingLists PWA",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "any",
+    "start_url": "/projectG/",
+    "status_bar": "default",
+    "icons": [
+      {
+        "src": "static/images/images.png",
+        "sizes": "160x160"
+       
+      }
+    ]
+  }
+  

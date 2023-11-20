@@ -2,7 +2,15 @@
 
 <!DOCTYPE html>
 
+    {% load pwa %} 
+    {% progressive_web_app_meta %} 
+   
+
+
+
     <head>
+        
+        <link rel="manifest" href="{% static 'manifest.json' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}My Lists{% endblock %}</title>
         
@@ -25,3 +33,19 @@
         </div>
       
     </body>
+  
+<!-- Inside your HTML template -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+      navigator.serviceWorker.register('{% static "serviceworker.js" %}')
+        .then(registration => {
+          console.log('Service Worker registered:', registration);
+        })
+          .catch(error => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
+  

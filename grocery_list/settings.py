@@ -17,6 +17,7 @@ import projectG
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("BASE_DIR:", BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pwa',
+    
 ]
 
 
@@ -132,5 +135,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+print("STATIC_URL:", STATIC_URL)
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Absolute path for collected static files during deployment
+
+PWA_SERVICE_WORKER_PATH = '/static/js/serviceworker.js'  # Path to your service worker file from the root of your web server
+
+
+print("STATIC_ROOT:", STATIC_ROOT)
+
+
+
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, '/static/js/serviceworker.js')
+print("PWA_SERVICE_WORKER_PATH:", PWA_SERVICE_WORKER_PATH)
+
+PWA_APP_NAME = 'shoppingLists'
+PWA_APP_DESCRIPTION = "shoppingLists PWA"
+PWA_APP_THEME_COLOR = '#000000'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_SERVICE_WORKER_PATH = 'projectG/static/js/serviceworker.js'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': 'static/images/images.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+
 django_heroku.settings(locals())

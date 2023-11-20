@@ -1,0 +1,268 @@
+textarea {
+  min-height: 400px;
+}
+body {
+font-family: Arial, sans-serif;
+}
+
+.container {
+max-width: 100%;
+padding: 10px;
+}
+
+/* Header Styles */
+h2 {
+font-size: 30px;
+margin: 10px 0;
+}
+
+.header-link {
+text-align: right;
+font-size: 22px;
+position: absolute;
+top: 10px;
+right: 10px;
+
+color: rgb(255, 0, 76);
+}
+
+.bg-yellow {
+  background-color: rgb(231, 219, 163);
+  /* You can adjust the shade of blue by specifying a different color value. */
+}
+
+.bg-blue {
+  background-color: rgb(96, 117, 211);
+  /* You can adjust the shade of blue by specifying a different color value. */
+}
+.home-link {
+ /* Use flexbox to align items horizontally */
+  align-items: center; /* Center items vertically */
+  text-decoration: none; /* Remove underlines from the link */
+  color: #066631; /* Text color for the link */
+  font-size: 22px; /* Font size for the link */
+  position: absolute;
+  top: 60px;
+  right: 60px;
+}
+
+
+/* Button Styles */
+
+
+
+.buttons button, .buttons a {
+  font-size: 20px; /* Increase font size to make it bigger */
+  padding: 10px 20px; /* Increase padding to make buttons bigger */
+  display: block;
+  margin: 10px auto;
+  width: 100%;
+}
+.buttons {
+text-align: center;
+margin-top: 10px;
+}
+
+
+/* List Styles */
+.list {
+margin: 10px 0;
+
+padding: 10px;
+}
+
+.list button {
+margin: 5px;
+}
+
+/* Form and Grocery List Styles */
+#groceryListContainer {
+padding: 10px;
+}
+
+#groceryItems {
+list-style: none;
+padding: 0;
+}
+
+#groceryItems li {
+margin: 5px 0;
+}
+
+/* Additional Styles (you can customize these) */
+/* @media queries for responsive design */
+@media (max-width: 768px) {
+.buttons button {
+    font-size: 20px;
+}
+
+.list {
+    font-size: 20px;
+}
+}
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+input {
+  border: 1px solid transparent;
+  background-color: #5f1717;
+  padding: 10px;
+  font-size: 20px;
+}
+input[type=text] {
+  background-color: #e7219515;
+  width: 29%;
+}
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #9cd0ee;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #922a2a;
+  border-bottom: 1px solid #861818;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #742020;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+
+.done {
+text-decoration: line-through;
+color: #999; /* You can adjust the color to your preference */
+}
+.hidden {
+display: none;
+}
+.button-container {
+display: flex;
+justify-content: space-around;
+gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+.list-items {
+display: none;
+list-style: none; /* Remove list bullets */
+padding: 0;
+margin: 10px 0;
+}
+#submit-list {
+  display: block;
+  margin: 0 auto; /* Center the button horizontally */
+  margin-top: 20px; /* Add some top margin for spacing */
+  /* Add any additional styles you want for the button */
+}
+
+.list-items a:hover {
+color: #007bff; /* Text color on hover for links */
+}
+ul {
+list-style-type: none;
+padding: 0;
+}
+.done {
+text-decoration: line-through;
+color: #999;
+}
+.list {
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+padding: 10px;
+margin: 10px;
+border-radius: 5px;
+
+}
+
+/* Style for the list name */
+.list h3 {
+margin: 0;
+font-size: 20px;
+margin-right: 20px;
+}
+
+/* Style for the buttons */
+.list button {
+padding: 5px 10px;
+margin-right: 10px;
+font-size: 20px;
+border: none;
+border-radius: 3px;
+}
+
+/* Style for primary button */
+.list button.btn-primary {
+background-color: #007bff;
+color: #fff;
+}
+
+/* Style for success button */
+.list button.btn-success {
+background-color: #28a745;
+color: #fff;
+}
+
+/* Style for info button */
+.list button.btn-info {
+background-color: #17a2b8;
+color: #fff;
+}
+
+/* Style for danger button */
+.list button.btn-danger {
+background-color: #dc3545;
+color: #fff;
+}
+
+/* Style for button icons */
+.list button i {
+margin-right: 5px;
+}
+
+/* Add hover effect to buttons */
+.list button:hover {
+opacity: 0.8;
+cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+ul {
+list-style-type: none;
+padding: 0;
+}
+
+
+
+.timestamp-email{
+  color: #202124;
+  font-size: .75rem;
+  letter-spacing: .3px;
+}
