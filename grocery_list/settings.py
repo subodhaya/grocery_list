@@ -27,7 +27,7 @@ print("BASE_DIR:", BASE_DIR)
 SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = []
@@ -136,6 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 print("STATIC_URL:", STATIC_URL)
 
 
@@ -165,7 +166,8 @@ PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
         'src': 'static/images/images.png',
-        'sizes': '160x160'
+        'sizes': '160x160',
+        'type':'image/png'
     }
 ]
 PWA_APP_DIR = 'ltr'

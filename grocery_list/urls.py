@@ -24,7 +24,6 @@ from django.conf import settings
 
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('projectG/', include('projectG.urls')),
@@ -32,4 +31,7 @@ urlpatterns = [
     
     path('manifest.json', TemplateView.as_view(template_name='projectG/manifest.json', content_type='application/json')),
     path('serviceworker.js', TemplateView.as_view(template_name='projectG/serviceworker.js', content_type='application/javascript')),
-] + static('/static/', document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static('/static/', document_root=settings.STATIC_ROOT)

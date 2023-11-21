@@ -11,7 +11,9 @@
     "icons": [
       {
         "src": "static/images/images.png",
-        "sizes": "160x160"
+        "sizes": "160x160",
+        "type": "image/png"
+        
        
       }
     ]
